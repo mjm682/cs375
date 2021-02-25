@@ -1,0 +1,46 @@
+html {
+    background-color: rgb(86, 189, 108);
+}
+
+.header{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding-top: 3vw;
+    font-size: 5em;
+    color: white;
+    font-weight: bolder;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+
+.sub-header{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding-top: 3vw;
+    font-size: 1.5em;
+    color: white;
+    font-weight: bolder;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+
+.rounded{
+    color: white;
+    width: 30%;
+    margin: auto;
+    display: block;
+}
+
+.search{
+    color: white;
+    margin: auto;
+    display: block;
+    border-radius: 25px;
+}
+
+input.search{
+    color: grey;
+    text-align: center;
+}
