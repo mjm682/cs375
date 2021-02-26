@@ -17,6 +17,7 @@
 <script>
 let search = document.querySelector("input").value;
 
+fetch("/search", {
 	method: "POST",
 	headers: {
 	"Content-Type": "application/json"
