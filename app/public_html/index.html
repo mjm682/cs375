@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Searchify</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <h1 class="header">Searchify</h1>
+        <br>
+        <hr class="rounded">
+        <h3 class="sub-header">An interactive way to expand your taste in music.</h3>
+        <br>
+        <input class = "search" type="text" placeholder="Search for an artist...">
+    </div>
+<script>
+let search_field = document.querySelector("input");
+
+search_field.addEventListener("keyup", function(event){
+    if (event.keyCode === 13) {
+        let search_value = search_field.value;
+        event.preventDefault();
+
+        console.log(search_value);
+        
+        fetch(`search/?artist=${search_value}`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify(search_value),
+        }).then(function (response) {
+            console.log(response.status);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }   
+});
+
+</script>
+</body>
+</html>
