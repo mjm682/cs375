@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf8">
+	<script src="https://d3js.org/d3.v6.js"></script>
+	<title>Graph Test</title>
+	
+
+</head>
+
+<body>
+	<div>
+	</div>
+
+<script>
+
+let data = [4, 8, 15, 16, 23, 42];
+width = 420;
+d3.select("body")
+	.append("svg")
+	.attr("width", 50)
+	.attr("height", 50)
+	.append("circle")
+	.attr("cx", 25)
+	.attr("cy", 25)
+	.attr("r", 25)
+	.style("fill", "purple");
+
+d3.create("span")
+	.style("color", "white")
+	.style("background-color", "black")
+	.html("Hello, World!")
+	.node();
+
+function graph(){
+const div = d3.create("div")
+	.style("font", "10px sans-serif")
+	.style("text-align", "right")
+	.style("color", "white");
+
+div.selectAll("div")
+	.data(data)
+	.join("div")
+		.style("background", "steelblue")
+		.style("padding", "3px")
+		.style("margin", "1px")
+		.style("width", d => `${d * 10}px`)
+		.text(d => d);
+	return div.node();
+	}
+graph();
+</script>
+</body>
