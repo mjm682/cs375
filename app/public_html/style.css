@@ -12,6 +12,11 @@ html {
     margin: auto;
     display: block;
     text-align: center;
+
+    animation: fadeIn ease 1s;
+    -webkit-animation: fadeIn ease 1s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
 }
 
 .sub-header{
@@ -24,6 +29,11 @@ html {
     margin: auto;
     display: block;
     text-align: center;
+
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
 }
 
 .rounded{
@@ -31,6 +41,12 @@ html {
     width: 30%;
     margin: auto;
     display: block;
+    outline: none;
+
+    animation: fadeIn ease 3s;
+    -webkit-animation: fadeIn ease 3s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
 }
 
 .search{
@@ -38,9 +54,60 @@ html {
     margin: auto;
     display: block;
     border-radius: 25px;
+
+    animation: fadeIn ease 3s;
+    -webkit-animation: fadeIn ease 3s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
 }
 
 input.search{
     color: grey;
     text-align: center;
+    outline: none;
+    border: none;
+    height: 2vw;
 }
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+    
+@-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@keyframes slide {
+    from {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+    }
+    to { 
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+  
+  .dropdown {
+     animation: fade 2s linear forwards;
+  }
+  

@@ -29,7 +29,7 @@ search_field.addEventListener("keyup", function(event){
         headers: {
         "Content-Type": "application/json"
         },
-        body: JSON.stringify(search_value),
+        body: JSON.stringify({search_value}),
         }).then(function (response) {
             console.log(response.status);
         }).catch(function (error) {
