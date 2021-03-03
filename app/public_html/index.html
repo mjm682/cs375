@@ -14,6 +14,21 @@
         <br>
         <input class = "search" type="text" placeholder="Search for an artist...">
     </div>
+    <!-- Delete all code below this until the next comment, this is just Chance's testing-->
+    <div id = "artist">
+                <label for="artist"></label>
+            </div>
+    <div id = "followers">
+                <label for="followers"></label>
+            </div>
+    <div id = "genre">
+                <label for="genre"></label>
+            </div>
+    <div id = "uri">
+                <label for="uri"></label>
+            </div>
+    <!-- Delete all code above this until the next comment, this is just Chance's testing-->
+    
 <script>
 let search_field = document.querySelector("input");
 
@@ -23,20 +38,49 @@ search_field.addEventListener("keyup", function(event){
         event.preventDefault();
 
         console.log(search_value);
-        
-        fetch(`search/?artist=${search_value}`, {
+        console.log("made it into the eventListener");
+        // https://api.spotify.com/v1/search?q=tania%20bowra&type=artist
+        let fetchURL = '/search?artist=' + search_value;
+        fetch(fetchURL).then(function (response) {
+            console.log(response.status);
+            if (response.status === 200){
+                return response.json();
+            } else {
+                console.log("error");
+            }
+        /*fetch(`/search?artist=${search_value}`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json"
         },
-        body: JSON.stringify({search_value}),
+        body: JSON.stringify({search_value}),*/
         }).then(function (response) {
+            // comment out code below until next comment, this was used for Chance's testing
+            let artistDiv = document.getElementById("artist");
+            artistDiv.textContent = "Artist Name: " + response.name;
+            let followersDiv = document.getElementById("followers");
+            followersDiv.textContent = "Followers: " + response.followers;
+            let genreDiv = document.getElementById("genre");
+            genreDiv.textContent = "Genre: " + response.genre;
+            let uriDiv = document.getElementById("uri");
+            uriDiv.textContent = "Spotify URI: " + response.uri;
+            // comment out code above until next comment
+            console.log(response);
             console.log(response.status);
         }).catch(function (error) {
             console.log(error);
         });
     }   
 });
+
+/* field's needed
+Photo
+Genre:
+Most Popular Release:
+Followers:
+Monthly Listeners:
+Most Similar To:
+*/
 
 </script>
 </body>

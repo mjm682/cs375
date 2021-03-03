@@ -20,7 +20,15 @@ app.get("/search", function(req, res) {
     console.log(artist);
     axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, config).then(function (response){
         console.log(`Searching for artist ${artist}`);
-        res.status(200);
+        console.log(response.data.artists.items);
+        let artistName = response.data.artists.items[0].name;
+        let followers = response.data.artists.items[0].followers.total;
+        let genre = response.data.artists.items[0].genres[0];
+        let artistURI = response.data.artists.items[0].uri;
+        
+        let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "uri": artistURI};
+        console.log(newJSON);
+        res.status(200).json(newJSON);
     }).catch(function (error) {
         console.log(error);
         return res.sendStatus(500);
