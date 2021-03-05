@@ -3,9 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<title>Searchify</title>
+	<script src="https://d3js.org/d3.v6.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+	<div>
+	</div>
     <div>
         <h1 class="header">Searchify</h1>
         <br>
@@ -28,8 +31,16 @@
                 <label for="uri"></label>
             </div>
     <!-- Delete all code above this until the next comment, this is just Chance's testing-->
-    
+    <div id="chart">
+		</div>
 <script>
+let p = d3.select("body").selectAll("p")
+	.data(dataset)
+	.enter()
+	.append("p")
+	.text(function(d) {return d;});
+let svg = d3.select("body").append("svg");
+	
 let search_field = document.querySelector("input");
 
 search_field.addEventListener("keyup", function(event){
