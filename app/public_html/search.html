@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Searchify</title>
+	<script src="https://d3js.org/d3.v6.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div>
+	</div>
+    <div>
+        <h1 class="header">Searchify</h1>
+        <br>
+        <hr class="rounded">
+        <br>
+        <input class = "search" type="text" placeholder="Search for an artist...">
+    </div>
+    <!-- Delete all code below this until the next comment, this is just Chance's testing-->
+    <div id = "artist">
+                <label for="artist"></label>
+            </div>
+    <div id = "followers">
+                <label for="followers"></label>
+            </div>
+    <div id = "genre">
+                <label for="genre"></label>
+            </div>
+    <div id = "uri">
+                <label for="uri"></label>
+            </div>
+    <!-- Delete all code above this until the next comment, this is just Chance's testing-->
+    <div id="chart">
+		</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+<script>
+// let p = d3.select("body").selectAll("p")
+// 	.data(dataset) // dataset undefined
+// 	.enter()
+// 	.append("p")
+// 	.text(function(d) {return d;});
+// let svg = d3.select("body").append("svg");
+
+let qs = window.location.search;
+let urlParams = new URLSearchParams(qs);
+let access_token = urlParams.get('code');
+let access_token = urlParams.get('refresh_token');
+console.log(access_token)
+
+
+$.ajax({
+    url: '/refresh_token',
+    data: {
+    'refresh_token': refresh_token
+    }
+}).done(function(data) {
+    access_token = data.access_token;
+    oauthPlaceholder.innerHTML = oauthTemplate({
+    access_token: access_token,
+    refresh_token: refresh_token
+    });
+    console.log(access_token);
+});
+
+
+if(access_token){
+    let search_field = document.querySelector("input");
+    search_field.addEventListener("keyup", function(event){
+    if (event.keyCode === 13) {
+        let search_value = search_field.value;
+        event.preventDefault();
+
+        console.log(search_value);        
+        let fetchURL = '/search?artist=' + search_value + '&access_token=' + access_token;
+        fetch(fetchURL).then(function (response) {
+            console.log(response.status);
+            if (response.status === 200){
+                return response.json();
+            } else {
+                console.log("error");
+            }
+        /*fetch(`/search?artist=${search_value}`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({search_value}),*/
+        }).then(function (response) {
+            // comment out code below until next comment, this was used for Chance's testing
+            console.log(response);
+            let artistDiv = document.getElementById("artist");
+            artistDiv.textContent = "Artist Name: " + response.name;
+            let followersDiv = document.getElementById("followers");
+            followersDiv.textContent = "Followers: " + response.followers;
+            let genreDiv = document.getElementById("genre");
+            genreDiv.textContent = "Genre: " + response.genre;
+            let uriDiv = document.getElementById("uri");
+            uriDiv.textContent = "Spotify URI: " + response.uri;
+            // comment out code above until next comment
+            console.log(response);
+            console.log(response.status);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }   
+});
+} 
+
+
+
+/* field's needed
+Photo
+Genre:
+Most Popular Release:
+Followers:
+Monthly Listeners:
+Most Similar To:
+*/
+
+</script>
+</body>
+</html>
