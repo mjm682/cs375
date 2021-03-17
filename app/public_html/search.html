@@ -33,6 +33,7 @@
     <div id="chart">
 		</div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
 // let p = d3.select("body").selectAll("p")
 // 	.data(dataset) // dataset undefined
@@ -44,24 +45,10 @@
 let qs = window.location.search;
 let urlParams = new URLSearchParams(qs);
 let access_token = urlParams.get('code');
-let access_token = urlParams.get('refresh_token');
-console.log(access_token)
+let refresh_token = urlParams.get('refresh_token');
 
-
-$.ajax({
-    url: '/refresh_token',
-    data: {
-    'refresh_token': refresh_token
-    }
-}).done(function(data) {
-    access_token = data.access_token;
-    oauthPlaceholder.innerHTML = oauthTemplate({
-    access_token: access_token,
-    refresh_token: refresh_token
-    });
-    console.log(access_token);
-});
-
+console.log("Access Token = " + access_token);
+console.log("Refresh Token = " + refresh_token);
 
 if(access_token){
     let search_field = document.querySelector("input");
@@ -71,7 +58,7 @@ if(access_token){
         event.preventDefault();
 
         console.log(search_value);        
-        let fetchURL = '/search?artist=' + search_value + '&access_token=' + access_token;
+        let fetchURL = '/search?artist=' + search_value + '&code=' + access_token;
         fetch(fetchURL).then(function (response) {
             console.log(response.status);
             if (response.status === 200){
@@ -88,6 +75,7 @@ if(access_token){
         }).then(function (response) {
             // comment out code below until next comment, this was used for Chance's testing
             console.log(response);
+
             let artistDiv = document.getElementById("artist");
             artistDiv.textContent = "Artist Name: " + response.name;
             let followersDiv = document.getElementById("followers");

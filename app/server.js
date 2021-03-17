@@ -1,5 +1,9 @@
 const express = require("express");
 const app = express();
+var request = require('request'); // "Request" library
+
+var favicon = require('serve-favicon');
+app.use(favicon(__dirname + '/favicon/favicon-32x32.png'));
 
 let axios = require("axios");
 var querystring = require('querystring');
@@ -10,43 +14,20 @@ var redirect_uri = 'http://localhost:3000/search.html'; // Your redirect uri
 
 const port = 3000;
 const hostname = "localhost";
-
-/**
- * Generates a random string containing numbers and letters
- * @param  {number} length The length of the string
- * @return {string} The generated string
- */
-var generateRandomString = function(length) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   
-    for (var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-};
-  
-var stateKey = 'spotify_auth_state';
-
 app.use(express.json());
 app.use(express.static("public_html"));
 
 app.get('/login', function(req, res) {
-
-    var state = generateRandomString(16);
-    res.cookie(stateKey, state);
-  
-    // your application requests authorization
     res.redirect('https://accounts.spotify.com/authorize?' +
       querystring.stringify({
         response_type: 'code',
         client_id: client_id,
         redirect_uri: redirect_uri,
-        state: state
       }));
   });
 
-app.get("/search", function(req, res) {
+app.get("/old-search", function(req, res) {
 
   let artist = req.query.artist;
   let access_token = req.query.access_token;
@@ -82,6 +63,67 @@ app.get("/search", function(req, res) {
   });
 });
 
+app.get('/search', function(req, res) {
+  var code = req.query.code || null;
+  let artist = req.query.artist;
+  console.log("code: " + code);
+  var authOptions = {
+    url: 'https://accounts.spotify.com/api/token',
+    form: {
+      code: code,
+      redirect_uri: redirect_uri,
+      grant_type: 'authorization_code'
+    },
+    headers: {
+      'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+    },
+    json: true
+  };
+
+  request.post(authOptions, function(error, response, body) {
+    console.log(response.statusCode);
+    if (!error && response.statusCode === 200) {
+
+      var access_token = body.access_token,
+          refresh_token = body.refresh_token;
+        console.log("access token = " + access_token);
+        console.log("refresh token = " + refresh_token);
+
+      var options = {
+        url: `https://api.spotify.com/v1/search?q=${artist}&type=artist`,
+        headers: { 'Authorization': 'Bearer ' + access_token },
+        json: true
+      };
+
+      console.log("Artist:" + artist);
+      console.log("Token = " + access_token);
+
+      console.log(`Searching for artist ${artist}`);
+      // request.get(options, function(error, response, body) {
+      //   console.log(body);
+      // });``
+      axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, options).then(function (response){
+      console.log(`Searching for artist ${artist}`);
+      console.log(response.data.artists.items);
+      let artistName = response.data.artists.items[0].name;
+      let followers = response.data.artists.items[0].followers.total;
+      let genre = response.data.artists.items[0].genres[0];
+      let artistURI = response.data.artists.items[0].uri;
+      
+      let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "uri": artistURI};
+      console.log(newJSON);
+      res.status(200).json(newJSON);
+  }).catch(function (error) {
+      console.log(error);
+      return res.sendStatus(500);
+  });
+    } 
+    else{
+      console.log("error: " + error);
+    }
+  });
+});
+
 app.get("/result", function(req, res) {
     console.log("result");
     return res.status(200).send("");
@@ -93,7 +135,7 @@ app.get('/refresh_token', function(req, res) {
     var refresh_token = req.query.refresh_token;
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
-      headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+      headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
       form: {
         grant_type: 'refresh_token',
         refresh_token: refresh_token
