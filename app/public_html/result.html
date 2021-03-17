@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Searchify</title>
+	<script src="https://d3js.org/d3.v6.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div>
+	</div>
+    <div>
+        <h1 class="header">Resluts</h1>
+        <br>
+        <hr class="rounded">
+        <br>
+        <a href="/login" class="login">Search Again</a>
+        <br>
+    </div>
+    <!-- Delete all code below this until the next comment, this is just Chance's testing-->
+    <div id = "artist">
+                <label for="artist"></label>
+            </div>
+    <div id = "followers">
+                <label for="followers"></label>
+            </div>
+    <div id = "genre">
+                <label for="genre"></label>
+            </div>
+    <div id = "uri">
+                <label for="uri"></label>
+            </div>
+    <!-- Delete all code above this until the next comment, this is just Chance's testing-->
+    <div id="chart">
+		</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+// let p = d3.select("body").selectAll("p")
+// 	.data(dataset) // dataset undefined
+// 	.enter()
+// 	.append("p")
+// 	.text(function(d) {return d;});
+// let svg = d3.select("body").append("svg");
+
+
+let artist = localStorage.getItem("artist");
+let followers = localStorage.getItem("followers");
+let genre = localStorage.getItem("genre");
+let uri = localStorage.getItem("uri");
+
+
+let artistDiv = document.getElementById("artist");
+artistDiv.textContent = "Artist Name: " + artist;
+let followersDiv = document.getElementById("followers");
+followersDiv.textContent = "Followers: " + followers;
+let genreDiv = document.getElementById("genre");
+genreDiv.textContent = "Genre: " + genre;
+let uriDiv = document.getElementById("uri");
+uriDiv.textContent = "Spotify URI: " + uri;
+// comment out code above until next comment
+
+/* field's needed
+Photo
+Genre:
+Most Popular Release:
+Followers:
+Monthly Listeners:
+Most Similar To:
+*/
+
+</script>
+</body>
+</html>

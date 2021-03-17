@@ -76,15 +76,24 @@ if(access_token){
             // comment out code below until next comment, this was used for Chance's testing
             console.log(response);
 
-            let artistDiv = document.getElementById("artist");
-            artistDiv.textContent = "Artist Name: " + response.name;
-            let followersDiv = document.getElementById("followers");
-            followersDiv.textContent = "Followers: " + response.followers;
-            let genreDiv = document.getElementById("genre");
-            genreDiv.textContent = "Genre: " + response.genre;
-            let uriDiv = document.getElementById("uri");
-            uriDiv.textContent = "Spotify URI: " + response.uri;
+            // let artistDiv = document.getElementById("artist");
+            // artistDiv.textContent = "Artist Name: " + response.name;
+            // let followersDiv = document.getElementById("followers");
+            // followersDiv.textContent = "Followers: " + response.followers;
+            // let genreDiv = document.getElementById("genre");
+            // genreDiv.textContent = "Genre: " + response.genre;
+            // let uriDiv = document.getElementById("uri");
+            // uriDiv.textContent = "Spotify URI: " + response.uri;
             // comment out code above until next comment
+            
+            // Local Storage
+            localStorage.setItem("artist", response.name);
+            localStorage.setItem("followers", response.followers);
+            localStorage.setItem("genre", response.genre);
+            localStorage.setItem("uri", response.uri);
+
+            window.location.replace("http://localhost:3000/result.html");
+
             console.log(response);
             console.log(response.status);
         }).catch(function (error) {
