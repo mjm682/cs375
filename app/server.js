@@ -27,43 +27,7 @@ app.get('/login', function(req, res) {
       }));
   });
 
-app.get("/old-search", function(req, res) {
-
-  let artist = req.query.artist;
-  let access_token = req.query.access_token;
-  console.log("Artist:" + artist);
-  console.log("Token = " + access_token);
-
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  console.log(code);
-  console.log(state);
-  console.log(storedState);
-
-  let config = {
-      headers: { Authorization: `Bearer ${access_token}` }
-  };
-
-  axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, config).then(function (response){
-      console.log(`Searching for artist ${artist}`);
-      console.log(response.data.artists.items);
-      let artistName = response.data.artists.items[0].name;
-      let followers = response.data.artists.items[0].followers.total;
-      let genre = response.data.artists.items[0].genres[0];
-      let artistURI = response.data.artists.items[0].uri;
-      
-      let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "uri": artistURI};
-      console.log(newJSON);
-      res.status(200).json(newJSON);
-  }).catch(function (error) {
-      console.log(error);
-      return res.sendStatus(500);
-  });
-});
-
-app.get('/search', function(req, res) {
+app.get('/search', function(req, res) { // MM
   var code = req.query.code || null;
   let artist = req.query.artist;
   console.log("code: " + code);
@@ -99,18 +63,16 @@ app.get('/search', function(req, res) {
       console.log("Token = " + access_token);
 
       console.log(`Searching for artist ${artist}`);
-      // request.get(options, function(error, response, body) {
-      //   console.log(body);
-      // });``
       axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, options).then(function (response){
       console.log(`Searching for artist ${artist}`);
       console.log(response.data.artists.items);
       let artistName = response.data.artists.items[0].name;
       let followers = response.data.artists.items[0].followers.total;
       let genre = response.data.artists.items[0].genres[0];
-      let artistURI = response.data.artists.items[0].uri;
+      let uri = response.data.artists.items[0].uri;
+      let imageURL = response.data.artists.items[0].images[0].url;
       
-      let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "uri": artistURI};
+      let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
       console.log(newJSON);
       res.status(200).json(newJSON);
   }).catch(function (error) {
@@ -124,13 +86,50 @@ app.get('/search', function(req, res) {
   });
 });
 
+app.get("/related", function(req, res) { // CS
+    let uri = req.query.uri;
+    console.log(uri);
+    let spotifyURL ='https://api.spotify.com/v1/artists/' + uri + '/related-artists';
+    axios.get(spotifyURL, config).then(function (response){
+        console.log(response.data);
+        let artistName = response.data.artists[0].name;
+
+        let newJSON = {};
+        let artists = [];
+        
+        for(let i = 0; i < 20; i++){
+            let artistName = response.data.artists[i].name;
+            let followers = response.data.artists[i].followers.total;
+            let genre = response.data.artists[i].genres[0];
+            let imageURL = response.data.artists[i].images[0].url;
+            let URI = response.data.artists[i].id;
+            console.log(imageURL);
+            
+            console.log(artistName);
+            console.log(followers);
+            console.log(genre);
+            console.log(URI);
+            
+            artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI}
+            artists[i] = artistInfo;
+        }
+        newJSON = artists;
+
+        
+        //console.log(newJSON);
+        res.status(200).json(newJSON);
+    }).catch(function (error){
+        console.log(error);
+        res.status(500);
+    })
+})
+
 app.get("/result", function(req, res) {
     console.log("result");
     return res.status(200).send("");
 });
 
 app.get('/refresh_token', function(req, res) {
-
     // requesting access token from refresh token
     var refresh_token = req.query.refresh_token;
     var authOptions = {
@@ -151,7 +150,7 @@ app.get('/refresh_token', function(req, res) {
         });
       }
     });
-  });
+});
 
 app.listen(port, hostname, () => {
     console.log(`Listening at: http://${hostname}:${port}`);

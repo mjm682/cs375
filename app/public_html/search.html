@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<title>Searchify</title>
 	<script src="https://d3js.org/d3.v6.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,25 +18,8 @@
         <br>
         <input class = "search" type="text" placeholder="Search for an artist...">
     </div>
-    <!-- Delete all code below this until the next comment, this is just Chance's testing-->
-    <div id = "artist">
-                <label for="artist"></label>
-            </div>
-    <div id = "followers">
-                <label for="followers"></label>
-            </div>
-    <div id = "genre">
-                <label for="genre"></label>
-            </div>
-    <div id = "uri">
-                <label for="uri"></label>
-            </div>
-    <!-- Delete all code above this until the next comment, this is just Chance's testing-->
-    <div id="chart">
-		</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
+// D3.js
 // let p = d3.select("body").selectAll("p")
 // 	.data(dataset) // dataset undefined
 // 	.enter()
@@ -53,7 +38,7 @@ console.log("Refresh Token = " + refresh_token);
 if(access_token){
     let search_field = document.querySelector("input");
     search_field.addEventListener("keyup", function(event){
-    if (event.keyCode === 13) {
+        if (event.keyCode === 13) {
         let search_value = search_field.value;
         event.preventDefault();
 
@@ -63,57 +48,30 @@ if(access_token){
             console.log(response.status);
             if (response.status === 200){
                 return response.json();
-            } else {
+            } 
+            else{
                 console.log("error");
             }
-        /*fetch(`/search?artist=${search_value}`, {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({search_value}),*/
         }).then(function (response) {
-            // comment out code below until next comment, this was used for Chance's testing
             console.log(response);
+            console.log(response.status);
 
-            // let artistDiv = document.getElementById("artist");
-            // artistDiv.textContent = "Artist Name: " + response.name;
-            // let followersDiv = document.getElementById("followers");
-            // followersDiv.textContent = "Followers: " + response.followers;
-            // let genreDiv = document.getElementById("genre");
-            // genreDiv.textContent = "Genre: " + response.genre;
-            // let uriDiv = document.getElementById("uri");
-            // uriDiv.textContent = "Spotify URI: " + response.uri;
-            // comment out code above until next comment
-            
-            // Local Storage
+            // Local Storage -> used in results page
             localStorage.setItem("artist", response.name);
             localStorage.setItem("followers", response.followers);
             localStorage.setItem("genre", response.genre);
             localStorage.setItem("uri", response.uri);
+            localStorage.setItem("image", response.imageURL);
 
+            // Redirect
             window.location.replace("http://localhost:3000/result.html");
 
-            console.log(response);
-            console.log(response.status);
         }).catch(function (error) {
             console.log(error);
         });
-    }   
-});
+        }   
+    });
 } 
-
-
-
-/* field's needed
-Photo
-Genre:
-Most Popular Release:
-Followers:
-Monthly Listeners:
-Most Similar To:
-*/
-
 </script>
 </body>
 </html>
