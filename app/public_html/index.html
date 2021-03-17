@@ -34,7 +34,10 @@
                 <label for="uri"></label>
             </div>
     <!-- Delete all code above this until the next comment, this is just Chance's testing-->
-    <div id="chart">
+    <div id="chart-container">
+		<svg id="chart">
+			
+		</svg>
 		</div>
 <script>
 /*let p = d3.select("body").selectAll("p")
@@ -62,15 +65,9 @@ search_field.addEventListener("keyup", function(event){
             } else {
                 console.log("error");
             }
-        /*fetch(`/search?artist=${search_value}`, {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({search_value}),*/
         }).then(function (response) {
             // comment out code below until next comment, this was used for Chance's testing
-            let artistDiv = document.getElementById("artist");
+            /*let artistDiv = document.getElementById("artist");
             artistDiv.textContent = "Artist Name: " + response.name;
             let followersDiv = document.getElementById("followers");
             followersDiv.textContent = "Followers: " + response.followers;
@@ -80,7 +77,7 @@ search_field.addEventListener("keyup", function(event){
             artistImage.src = response.imageURL;
             let uriDiv = document.getElementById("uri");
             uriDiv.textContent = "Spotify URI: " + response.uri;
-            let artistURI = response.uri;
+            let artistURI = response.uri;*/
             // comment out code above until next comment
             console.log(response);
             //console.log(response.status);
@@ -104,6 +101,18 @@ search_field.addEventListener("keyup", function(event){
         }).then(function (response) {
             
             console.log(response);
+			let svg = d3.select("svg").attr("viewBox", [0,0, width, height]);
+			
+			let artist = response[i].name;
+			let followers = response[i].follwers;
+			let genre = response[i].genre;
+			let imageURL = response[i].imageURL;
+			let URI = response[i].uri;
+			
+			const scale = 1.7;
+			const center = [width / 2, height / 2];
+			
+			// "nodes" refers to each attribute from response.
 
             /* some sort of for loop here to generate the circles w the necessary data, use the variables below for correct naming conventions
              
@@ -117,6 +126,13 @@ search_field.addEventListener("keyup", function(event){
             */
             
             for (let i = 0; i < 20; i++){
+			svg.append("circle");
+				let node = svg.append("g")
+				.selectAll("circle")
+				.data(artist)
+				.join("circle")
+					.attr("r", 4)
+					.attr("fill", d => d.color);
                 console.log(response[i].name);
             }
             
