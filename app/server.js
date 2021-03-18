@@ -12,6 +12,12 @@ var client_id = 'b0e5f1805df1454daa59e96c976dc66d'; // Your client id
 var client_secret = '5c027ea2b9bd4e3095f718ddce2ec43d'; // Your secret
 var redirect_uri = 'http://localhost:3000/search.html'; // Your redirect uri
 
+var searchedArtist = '';
+var searchedFollowers = '';
+var searchedGenre = '';
+var searchedURI = '';
+let searchedURL = '';
+
 const port = 3000;
 const hostname = "localhost";
   
@@ -66,39 +72,59 @@ app.get('/search', function(req, res) {
       axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, options).then(function (response){
         console.log(`Searching for artist ${artist}`);
         console.log(response.data.artists.items);
-        let artistName = response.data.artists.items[0].name;
-        let followers = response.data.artists.items[0].followers.total;
-        let genre = response.data.artists.items[0].genres[0];
-        let uri = response.data.artists.items[0].uri;
-        let imageURL = response.data.artists.items[0].images[0].url;
+        searchedArtist = response.data.artists.items[0].name;
+        searchedFollowers = response.data.artists.items[0].followers.total;
+        searchedGenre = response.data.artists.items[0].genres[0];
+        searchedURI = response.data.artists.items[0].id;
+        searchedURL = response.data.artists.items[0].images[0].url;
         
-        let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
+        //let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
+        //console.log(newJSON);
+        //res.status(200).json(newJSON);
+        let relatedURL = 'https://api.spotify.com/v1/artists/' + searchedURI + '/related-artists';
+        //let relatedArtists = await axios.get(relatedURL);
+        
+          console.log(access_token);
+          console.log(searchedArtist);
+        return axios.get(relatedURL, options);
+        console.log(response);
         console.log(newJSON);
         res.status(200).json(newJSON);
-        let relatedURL = 'https://api.spotify.com/v1/artists/' + uri + '/related-artists';
-        return axios.get(relatedURL);
   }).then(function (response){
       console.log(response.data);
       let artistName = response.data.artists[0].name;
 
-      let newJSON = {};
+      let newJSON = {}
       let artists = [];
       
       for(let i = 0; i < 20; i++){
           let artistName = response.data.artists[i].name;
           let followers = response.data.artists[i].followers.total;
           let genre = response.data.artists[i].genres[0];
-          let imageURL = response.data.artists[i].images[0].url;
+          let imageURL = '';
+          //let imageURL = response.data.artists[i].images[0].url;
+          //console.log(imageURL);
+          //typeof myVar !== 'undefined'
+          if (typeof response.data.artists[i].images[0] == 'undefined'){
+              imageURL = "No Image Found";
+              console.log(imageURL);
+          } else {
+              imageURL = response.data.artists[i].images[0].url;
+              console.log(imageURL);
+              
+          }
           let URI = response.data.artists[i].id;
-          console.log(imageURL);
           
+          console.log(imageURL);
           console.log(artistName);
           console.log(followers);
           console.log(genre);
           console.log(URI);
           
+          searchedArtistInfo = {"name" : searchedArtist, "followers": searchedFollowers, "genre": searchedGenre, "imageURL": searchedURL, "uri": searchedURI};
           artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI}
-          artists[i] = artistInfo;
+          artists[0] = searchedArtistInfo;
+          artists[i+1] = artistInfo;
       }
       newJSON = artists;
     console.log(newJSON);

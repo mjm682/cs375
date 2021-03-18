@@ -57,11 +57,11 @@ if(access_token){
             console.log(response.status);
 
             // Local Storage -> used in results page
-            localStorage.setItem("artist", response.name);
-            localStorage.setItem("followers", response.followers);
-            localStorage.setItem("genre", response.genre);
-            localStorage.setItem("uri", response.uri);
-            localStorage.setItem("image", response.imageURL);
+            localStorage.setItem("artist", response[0].name);
+            localStorage.setItem("followers", response[0].followers);
+            localStorage.setItem("genre", response[0].genre);
+            localStorage.setItem("uri", response[0].uri);
+            localStorage.setItem("image", response[0].imageURL);
 
             // Redirect
             window.location.replace("http://localhost:3000/result.html");
