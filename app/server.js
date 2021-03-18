@@ -27,7 +27,7 @@ app.get('/login', function(req, res) {
       }));
   });
 
-app.get('/search', function(req, res) { // MM
+app.get('/search', function(req, res) { 
   var code = req.query.code || null;
   let artist = req.query.artist;
   console.log("code: " + code);
@@ -61,20 +61,48 @@ app.get('/search', function(req, res) { // MM
 
       console.log("Artist:" + artist);
       console.log("Token = " + access_token);
+      console.log(`Searching for artist ${artist}`);
 
-      console.log(`Searching for artist ${artist}`);
       axios.get(`https://api.spotify.com/v1/search?q=${artist}&type=artist`, options).then(function (response){
-      console.log(`Searching for artist ${artist}`);
-      console.log(response.data.artists.items);
-      let artistName = response.data.artists.items[0].name;
-      let followers = response.data.artists.items[0].followers.total;
-      let genre = response.data.artists.items[0].genres[0];
-      let uri = response.data.artists.items[0].uri;
-      let imageURL = response.data.artists.items[0].images[0].url;
+        console.log(`Searching for artist ${artist}`);
+        console.log(response.data.artists.items);
+        let artistName = response.data.artists.items[0].name;
+        let followers = response.data.artists.items[0].followers.total;
+        let genre = response.data.artists.items[0].genres[0];
+        let uri = response.data.artists.items[0].uri;
+        let imageURL = response.data.artists.items[0].images[0].url;
+        
+        let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
+        console.log(newJSON);
+        res.status(200).json(newJSON);
+        let relatedURL = 'https://api.spotify.com/v1/artists/' + uri + '/related-artists';
+        return axios.get(relatedURL);
+  }).then(function (response){
+      console.log(response.data);
+      let artistName = response.data.artists[0].name;
+
+      let newJSON = {};
+      let artists = [];
       
-      let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
-      console.log(newJSON);
-      res.status(200).json(newJSON);
+      for(let i = 0; i < 20; i++){
+          let artistName = response.data.artists[i].name;
+          let followers = response.data.artists[i].followers.total;
+          let genre = response.data.artists[i].genres[0];
+          let imageURL = response.data.artists[i].images[0].url;
+          let URI = response.data.artists[i].id;
+          console.log(imageURL);
+          
+          console.log(artistName);
+          console.log(followers);
+          console.log(genre);
+          console.log(URI);
+          
+          artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI}
+          artists[i] = artistInfo;
+      }
+      newJSON = artists;
+    console.log(newJSON);
+    res.status(200).json(newJSON);
   }).catch(function (error) {
       console.log(error);
       return res.sendStatus(500);
@@ -86,7 +114,10 @@ app.get('/search', function(req, res) { // MM
   });
 });
 
-app.get("/related", function(req, res) { // CS
+
+// We can remove the /related handler once the code is integrated above
+
+app.get("/related", function(req, res) {  
     let uri = req.query.uri;
     console.log(uri);
     let spotifyURL ='https://api.spotify.com/v1/artists/' + uri + '/related-artists';
