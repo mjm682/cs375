@@ -77,7 +77,11 @@ app.get('/search', function(req, res) {
         searchedGenre = response.data.artists.items[0].genres[0];
         searchedURI = response.data.artists.items[0].id;
         searchedURL = response.data.artists.items[0].images[0].url;
-		searchedPopularity = response.data.artists.items[0].popularity;
+		    searchedPopularity = response.data.artists.items[0].popularity;
+
+        if (searchedGenre === undefined){
+          searchedGenre = "Unknown";
+        }
         
         //let newJSON = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": uri};
         //console.log(newJSON);
@@ -102,38 +106,44 @@ app.get('/search', function(req, res) {
       console.log("Found " +rel_len+ " related artists.");
       if(rel_len > 20){rel_len = 20;}
       
-      for(let i = 0; i < rel_len; i++){
-          let artistName = response.data.artists[i].name;
-          let followers = response.data.artists[i].followers.total;
-          let genre = response.data.artists[i].genres[0];
-          let imageURL = '';
-          let popularity = response.data.artists[i].popularity;
+      if(rel_len !=0){
+        for(let i = 0; i < rel_len; i++){
+            let artistName = response.data.artists[i].name;
+            let followers = response.data.artists[i].followers.total;
+            let genre = response.data.artists[i].genres[0];
+            let imageURL = '';
+            let popularity = response.data.artists[i].popularity;
 
-          if (typeof response.data.artists[i].images[0] == 'undefined'){
-              imageURL = '../default.jpg';
-          } else {
-              imageURL = response.data.artists[i].images[0].url;
-          }
+            if (typeof response.data.artists[i].images[0] == 'undefined'){
+                imageURL = '../default.jpg';
+            } else {
+                imageURL = response.data.artists[i].images[0].url;
+            }
 
-          if (genre === "undefined"){
-            genre = "Unknown";
-          } else {
-            genre = response.data.artists[i].genres[0];; 
-          }   
+            if (genre === "undefined"){
+              genre = "Unknown";
+            } else {
+              genre = response.data.artists[i].genres[0];; 
+            }   
 
-          let URI = response.data.artists[i].id;
-          
-          console.log(imageURL);
-          console.log(artistName);
-          console.log(followers);
-          console.log(genre);
-          console.log(URI);
-		      console.log(popularity);
-          
-          searchedArtistInfo = {"name" : searchedArtist, "followers": searchedFollowers, "genre": searchedGenre, "imageURL": searchedURL, "uri": searchedURI, "popularity": popularity};
-          artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI, "popularity": popularity}
-          artists[0] = searchedArtistInfo;
-          artists[i+1] = artistInfo;
+            let URI = response.data.artists[i].id;
+            
+            console.log(imageURL);
+            console.log(artistName);
+            console.log(followers);
+            console.log(genre);
+            console.log(URI);
+            console.log(popularity);
+            
+            searchedArtistInfo = {"name" : searchedArtist, "followers": searchedFollowers, "genre": searchedGenre, "imageURL": searchedURL, "uri": searchedURI, "popularity": popularity};
+            artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI, "popularity": popularity}
+            artists[0] = searchedArtistInfo;
+            artists[i+1] = artistInfo;
+        }
+      }
+      else{
+        searchedArtistInfo = {"name" : searchedArtist, "followers": searchedFollowers, "genre": searchedGenre, "imageURL": searchedURL, "uri": searchedURI, "popularity": searchedPopularity};
+        artists[0] = searchedArtistInfo;
       }
       newJSON = artists;
       console.log(newJSON);
@@ -149,76 +159,6 @@ app.get('/search', function(req, res) {
   });
 });
 
-
-// We can remove the /related handler once the code is integrated above
-
-app.get("/related", function(req, res) {  
-    let uri = req.query.uri;
-    console.log(uri);
-    let spotifyURL ='https://api.spotify.com/v1/artists/' + uri + '/related-artists';
-    axios.get(spotifyURL, config).then(function (response){
-        console.log(response.data);
-        let artistName = response.data.artists[0].name;
-
-        let newJSON = {};
-        let artists = [];
-        
-        for(let i = 0; i < 20; i++){
-            let artistName = response.data.artists[i].name;
-            let followers = response.data.artists[i].followers.total;
-            let genre = response.data.artists[i].genres[0];
-            let imageURL = response.data.artists[i].images[0].url;
-            let URI = response.data.artists[i].id;
-			let popularity = response.data.artists[i].popularity;
-            console.log(imageURL);
-            
-            console.log(artistName);
-            console.log(followers);
-            console.log(genre);
-            console.log(URI);
-			console.log(popularity);
-            
-            artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI, "popularity": popularity}
-            artists[i] = artistInfo;
-        }
-        newJSON = artists;
-
-        
-        //console.log(newJSON);
-        res.status(200).json(newJSON);
-    }).catch(function (error){
-        console.log(error);
-        res.status(500);
-    })
-})
-
-app.get("/result", function(req, res) {
-    console.log("result");
-    return res.status(200).send("");
-});
-
-app.get('/refresh_token', function(req, res) {
-    // requesting access token from refresh token
-    var refresh_token = req.query.refresh_token;
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      headers: { 'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')) },
-      form: {
-        grant_type: 'refresh_token',
-        refresh_token: refresh_token
-      },
-      json: true
-    };
-  
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-        var access_token = body.access_token;
-        res.send({
-          'access_token': access_token
-        });
-      }
-    });
-});
 
 app.listen(port, hostname, () => {
     console.log(`Listening at: http://${hostname}:${port}`);
