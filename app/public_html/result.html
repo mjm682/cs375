@@ -36,11 +36,18 @@
         </div>
         
         <div class="chart">
-            <table id="artists"></table>
+            <table class="tableTest" id="artists"></table>
         </div>
     </div>
 <script>
 
+localStorage.setItem('counter', 0);
+let counter = localStorage.getItem('counter');
+    
+localStorage.setItem('selectedArtist', '');
+let selectedArtist = localStorage.getItem('selectedArtist');
+    
+    
 let artist = localStorage.getItem("artist");
 let followers = localStorage.getItem("followers");
 let genre = localStorage.getItem("genre");
@@ -83,13 +90,25 @@ for(let i = 1; i < rel_arr.length; i++){
     td2_a.appendChild(td2);
 
     td1_a.setAttribute("href", "spotify:artist:" + rel_arr[i].uri);
-    td2_a.setAttribute("href", '/search?artist=' + rel_arr[i].name + '&code=' + access_token);
-
+    td2_a.setAttribute("href", "/login");
+    td2_a.setAttribute("onclick", 'researchArtist(rel_arr['+ i + '].name);');
+    //td2_a.setAttribute("href", '/search?artist=' + rel_arr[i].name + '&code=' + access_token);
+    
+    //selectedArtist = rel_arr[i].name;
+    
+    
     tr.append(td1_a);
     tr.append(td2_a);
     table.append(tr);
 }
 
+function researchArtist(artist){
+    console.log("Made it into the new function");
+    localStorage.setItem('counter', 1);
+    localStorage.setItem('selectedArtist', artist);
+    console.log(selectedArtist);
+    console.log(counter);
+}
 
 </script>
 <footer>

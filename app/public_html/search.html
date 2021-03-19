@@ -20,6 +20,11 @@
         <input class = "search" type="text" placeholder="Search for an artist...">
     </div>
 <script>
+    
+let counter = localStorage.getItem('counter');
+let selectedArtist = localStorage.getItem('selectedArtist');
+console.log(counter);
+console.log(selectedArtist);
 
 let qs = window.location.search;
 let urlParams = new URLSearchParams(qs);
@@ -28,6 +33,44 @@ let refresh_token = urlParams.get('refresh_token');
 
 console.log("Access Token = " + access_token);
 console.log("Refresh Token = " + refresh_token);
+
+if(counter > 0){
+    console.log("made it into new conditional");
+    let fetchURL = '/search?artist=' + selectedArtist + '&code=' + access_token;
+    fetch(fetchURL).then(function (response) {
+        console.log(response.status);
+        if (response.status === 200){
+            return response.json();
+        }
+        else if (response.status === 500){
+            window.alert("Error! Reauthorization Needed.");
+            window.location.assign('/login');
+        }
+        else{
+            window.alert("Invalid entry! Please try again.");
+            window.location.assign('fetchURL');
+            console.log("error");
+        }
+    }).then(function (response) {
+        console.log(response);
+
+        // Local Storage -> used in results page
+        localStorage.setItem("artist", response[0].name);
+        localStorage.setItem("followers", response[0].followers);
+        localStorage.setItem("genre", response[0].genre);
+        localStorage.setItem("uri", response[0].uri);
+        localStorage.setItem("image", response[0].imageURL);
+        localStorage.setItem("popularity", response[0].popularity);
+        localStorage.setItem("rel_arr", JSON.stringify(response));
+        localStorage.setItem("code", access_token);
+
+        // Redirect
+        window.location.replace("http://localhost:3000/result.html");
+
+    }).catch(function (error) {
+        console.log(error);
+    });
+}
 
 if(access_token){
     let search_field = document.querySelector("input");
