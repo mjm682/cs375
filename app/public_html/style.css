@@ -181,6 +181,10 @@ input.search{
 
 .results{
     display: flex;
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s; 
 }
 .search-result{
     flex: 1;
@@ -210,4 +214,24 @@ footer{
     
     animation: fadeIn ease 2s;
     -webkit-animation: fadeIn ease 2s;
+}
+
+.related-image{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.related-text{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    font-size: 1em;
+    color: white;
+    font-weight: bolder;
+}
+
+#artists{
+    display:block;
+    overflow-y: scroll;
+    height: 25%;
 }

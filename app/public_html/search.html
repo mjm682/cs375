@@ -63,6 +63,7 @@ if(access_token){
             localStorage.setItem("image", response[0].imageURL);
 			localStorage.setItem("popularity", response[0].popularity);
 			localStorage.setItem("rel_arr", JSON.stringify(response));
+            localStorage.setItem("code", access_token);
 
             // Redirect
             window.location.replace("http://localhost:3000/result.html");
