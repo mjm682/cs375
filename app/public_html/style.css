@@ -220,6 +220,8 @@ footer{
     border-radius: 50%;
     width: 50px;
     height: 50px;
+	vertical-align: middle;
+	
 }
 
 .related-text{
@@ -228,6 +230,7 @@ footer{
     font-size: 1em;
     color: white;
     font-weight: bolder;
+	text-align: center;
 }
 
 #artists{
