@@ -20,13 +20,6 @@
         <input class = "search" type="text" placeholder="Search for an artist...">
     </div>
 <script>
-// D3.js
-// let p = d3.select("body").selectAll("p")
-// 	.data(dataset) // dataset undefined
-// 	.enter()
-// 	.append("p")
-// 	.text(function(d) {return d;});
-// let svg = d3.select("body").append("svg");
 
 let qs = window.location.search;
 let urlParams = new URLSearchParams(qs);
@@ -50,7 +43,13 @@ if(access_token){
             if (response.status === 200){
                 return response.json();
             } 
+			else if (response.status === 500){
+				window.alert("Error! Reauthorization Needed.");
+				window.location.assign('/login');
+			}
             else{
+				window.alert("Invalid entry! Please try again.");
+				window.location.assign('fetchURL');
                 console.log("error");
             }
         }).then(function (response) {
