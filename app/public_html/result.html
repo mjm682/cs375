@@ -12,29 +12,27 @@
 	<div>
 	</div>
     <div>
-        <h1 class="header">Results</h1>
+        <h1 class="header" id = "title"></h1>
         <br>
         <hr class="rounded">
+        <h3 class="sub-header">Here's what we found.</h3>
         <br>
         <a href="/login" class="login">Search Again</a>
         <br>
     </div>
-
     <br>
-    <img id = "artistImage" src="" alt="Image of Searched Artist" style="width:400px;height:300;"></img>
-    <br>
-    <div id = "artist">
-        <label for="artist"></label>
+    <div class = "search-result">
+        <a href="" id = "uri"><img id = "artistImage" a href="" src="" alt="Image of Searched Artist"></img></a>
+        <br>
+        <div id = "followers" class = "result-text">
+            <label for="followers"></label>
+        </div>
+        <div id = "genre" class = "result-text">
+            <label for="genre"></label>
+        </div>
+        <br>
     </div>
-    <div id = "followers">
-        <label for="followers"></label>
-    </div>
-    <div id = "genre">
-        <label for="genre"></label>
-    </div>
-    <div>
-        <a href="" class="login" id = "uri">View on Spotify</a>
-    </div>
+    
 
     <div id="chart-container">
         <svg id="chart">
@@ -55,13 +53,13 @@
 let artist = localStorage.getItem("artist");
 let followers = localStorage.getItem("followers");
 let genre = localStorage.getItem("genre");
-let uri = localStorage.getItem("uri");
+let uri = "spotify:artist:" + localStorage.getItem("uri");
 let image = localStorage.getItem("image");
 
 let popularity = localStorage.getItem("popularity");
 
-let artistDiv = document.getElementById("artist");
-artistDiv.textContent = "Artist Name: " + artist;
+let artistDiv = document.getElementById("title");
+artistDiv.textContent = artist;
 let followersDiv = document.getElementById("followers");
 followersDiv.textContent = "Followers: " + followers;
 let genreDiv = document.getElementById("genre");
@@ -136,5 +134,8 @@ let svg = d3.select("body").append("svg");
     
 
 </script>
+<footer>
+    S3M - CS375
+</footer>
 </body>
 </html>

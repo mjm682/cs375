@@ -22,7 +22,7 @@ html {
 .sub-header{
     font-family: Arial, Helvetica, sans-serif;
     width: 100%;
-    padding-top: 3vw;
+    padding-top: 1vw;
     font-size: 1.5em;
     color: white;
     font-weight: bolder;
@@ -42,6 +42,10 @@ html {
     margin: auto;
     display: block;
     outline: none;
+    border: none;
+    background-color: white;
+    height: 1px;
+    border-radius: 40%;
 
     animation: fadeIn ease 3s;
     -webkit-animation: fadeIn ease 3s;
@@ -69,6 +73,22 @@ html {
     padding: 2px 6px 2px 6px;
     margin: auto;
     display: block;
+    width: 10%;
+    text-align: center;
+    border-radius: 25px;
+    
+    animation: fadeIn ease 3s;
+    -webkit-animation: fadeIn ease 3s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
+}
+
+.visit{
+    font: 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: grey;
+    padding: 2px 6px 2px 6px;
     width: 10%;
     text-align: center;
     border-radius: 25px;
@@ -126,7 +146,58 @@ input.search{
     }
   }
   
-  .dropdown {
+.dropdown {
      animation: fade 2s linear forwards;
-  }
+}
   
+#artistImage{
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin: auto;
+
+    animation: fadeIn ease 3s;
+    -webkit-animation: fadeIn ease 3s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s;
+}
+
+.result-text{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    font-size: 1em;
+    color: white;
+    font-weight: bolder;
+    margin: auto;
+    display: block;
+    text-align: center;
+    
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+    animation: slide ease 2s;
+    -webkit-animation: slide ease 2s; 
+}
+
+.search-result{
+    width: 50%;
+}
+
+a:focus {
+    outline: none;
+}
+
+footer{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    font-size: 0.5em;
+    color: white;
+    margin: auto;
+    display: block;
+    text-align: center;
+    position: fixed;
+    bottom: 0; 
+    
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 2s;
+}

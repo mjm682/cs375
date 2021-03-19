@@ -93,28 +93,34 @@ app.get('/search', function(req, res) {
         res.status(200).json(newJSON);
   }).then(function (response){
       console.log(response.data);
-      let artistName = response.data.artists[0].name;
+      // let artistName = response.data.artists[0].name;
 
       let newJSON = {}
       let artists = [];
       
-      for(let i = 0; i < 20; i++){
+      let rel_len = (response.data.artists).length;
+      console.log("Found " +rel_len+ " related artists.");
+      if(rel_len > 20){rel_len = 20;}
+      
+      for(let i = 0; i < rel_len; i++){
           let artistName = response.data.artists[i].name;
           let followers = response.data.artists[i].followers.total;
           let genre = response.data.artists[i].genres[0];
           let imageURL = '';
-		  let popularity = response.data.artists[i].popularity;
-          //let imageURL = response.data.artists[i].images[0].url;
-          //console.log(imageURL);
-          //typeof myVar !== 'undefined'
+          let popularity = response.data.artists[i].popularity;
+
           if (typeof response.data.artists[i].images[0] == 'undefined'){
-              imageURL = "No Image Found";
-              console.log(imageURL);
+              imageURL = '../default.jpg';
           } else {
               imageURL = response.data.artists[i].images[0].url;
-              console.log(imageURL);
-              
           }
+
+          if (genre === "undefined"){
+            genre = "Unknown";
+          } else {
+            genre = response.data.artists[i].genres[0];; 
+          }   
+
           let URI = response.data.artists[i].id;
           
           console.log(imageURL);
@@ -122,7 +128,7 @@ app.get('/search', function(req, res) {
           console.log(followers);
           console.log(genre);
           console.log(URI);
-		  console.log(popularity);
+		      console.log(popularity);
           
           searchedArtistInfo = {"name" : searchedArtist, "followers": searchedFollowers, "genre": searchedGenre, "imageURL": searchedURL, "uri": searchedURI, "popularity": popularity};
           artistInfo = {"name" : artistName, "followers": followers, "genre": genre, "imageURL": imageURL, "uri": URI, "popularity": popularity}
@@ -130,7 +136,7 @@ app.get('/search', function(req, res) {
           artists[i+1] = artistInfo;
       }
       newJSON = artists;
-    console.log(newJSON);
+      console.log(newJSON);
     res.status(200).json(newJSON);
   }).catch(function (error) {
       console.log(error);
