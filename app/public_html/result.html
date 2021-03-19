@@ -21,42 +21,33 @@
         <br>
     </div>
     <br>
-    <div class = "search-result">
-        <a href="" id = "uri"><img id = "artistImage" a href="" src="" alt="Image of Searched Artist"></img></a>
-        <br>
-        <div id = "followers" class = "result-text">
-            <label for="followers"></label>
+
+    <div class = "results">
+        <div class = "search-result">
+            <a href="" id = "uri"><img id = "artistImage" a href="" src="" alt="Image of Searched Artist"></img></a>
+            <br>
+            <div id = "followers" class = "result-text">
+                <label for="followers"></label>
+            </div>
+            <div id = "genre" class = "result-text">
+                <label for="genre"></label>
+            </div>
+            <br>
         </div>
-        <div id = "genre" class = "result-text">
-            <label for="genre"></label>
+        
+        <div class="chart">
+
         </div>
-        <br>
     </div>
-    
-
-    <div id="chart-container">
-        <svg id="chart">
-            
-        </svg>
-        </div>
-    <div id="chart">
-		</div>
 <script>
-// let p = d3.select("body").selectAll("p")
-// 	.data(dataset) // dataset undefined
-// 	.enter()
-// 	.append("p")
-// 	.text(function(d) {return d;});
-// let svg = d3.select("body").append("svg");
-
 
 let artist = localStorage.getItem("artist");
 let followers = localStorage.getItem("followers");
 let genre = localStorage.getItem("genre");
 let uri = "spotify:artist:" + localStorage.getItem("uri");
 let image = localStorage.getItem("image");
-
 let popularity = localStorage.getItem("popularity");
+let rel_arr = JSON.parse(localStorage.getItem("rel_arr"));
 
 let artistDiv = document.getElementById("title");
 artistDiv.textContent = artist;
@@ -69,69 +60,9 @@ uriDiv.href = uri;
 let artistImage = document.getElementById("artistImage");
 artistImage.src = image;
 
-// Need to integrate related artist search below
-
-/*let p = d3.select("body").selectAll("p")
-.data(dataset)
-.enter()
-.append("p")
-.text(function(d) {return d;});
-let svg = d3.select("body").append("svg");
-*/
-
-// //beginning of related artists fetch
-// function relatedFunction(artistURI){
-//     console.log(artistURI);
-// let fetchURL = '/related?uri=' + artistURI;
-// fetch(fetchURL).then(function (response) {
-//     console.log(response.status);
-//     if (response.status === 200){
-//         return response.json();
-//     } else {
-//         console.log("error");
-//     }
-// }).then(function (response) {
-    
-//     console.log(response);
-//     let svg = d3.select("svg").attr("viewBox", [0,0, width, height]);
-    
-//     let artist = response[i].name;
-//     let followers = response[i].follwers;
-//     let genre = response[i].genre;
-//     let imageURL = response[i].imageURL;
-//     let URI = response[i].uri;
-    
-//     const scale = 1.7;
-//     const center = [width / 2, height / 2];
-    
-//     // "nodes" refers to each attribute from response.
-
-//     /* some sort of for loop here to generate the circles w the necessary data, use the variables below for correct naming conventions
-        
-//     the following variables access the response json:
-        
-//     let artist = response[i].name;
-//     let followers = response[i].followers;
-//     let genre = response[i].genre;
-//     let imageURL = response[i].imageURL;
-//     let URI = response[i].uri;
-//     */
-    
-//     for (let i = 0; i < 20; i++){
-//     svg.append("circle");
-//         let node = svg.append("g")
-//         .selectAll("circle")
-//         .data(artist)
-//         .join("circle")
-//             .attr("r", 4)
-//             .attr("fill", d => d.color);
-//         console.log(response[i].name);
-//     }
-    
-// }).catch(function (error) {
-//     console.log(error);
-// });}
-    
+for(let i in rel_arr){
+    console.log(rel_arr[i]);
+}
 
 </script>
 <footer>

@@ -12,7 +12,7 @@
 	<div>
 	</div>
     <div>
-        <h1 class="header">Searchify</h1>
+        <a href="/"><h1 class="header">Searchify</h1></a>
         <br>
         <hr class="rounded">
         <h3 class="sub-header">Let's see what we can find.</h3>
@@ -54,7 +54,6 @@ if(access_token){
             }
         }).then(function (response) {
             console.log(response);
-            console.log(response.status);
 
             // Local Storage -> used in results page
             localStorage.setItem("artist", response[0].name);
@@ -63,6 +62,7 @@ if(access_token){
             localStorage.setItem("uri", response[0].uri);
             localStorage.setItem("image", response[0].imageURL);
 			localStorage.setItem("popularity", response[0].popularity);
+			localStorage.setItem("rel_arr", JSON.stringify(response));
 
             // Redirect
             window.location.replace("http://localhost:3000/result.html");

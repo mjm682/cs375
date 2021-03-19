@@ -179,12 +179,22 @@ input.search{
     -webkit-animation: slide ease 2s; 
 }
 
+.results{
+    display: flex;
+}
 .search-result{
-    width: 50%;
+    flex: 1;
+}
+.chart{
+    flex: 1;
 }
 
 a:focus {
     outline: none;
+}
+
+a{
+    text-decoration: none;
 }
 
 footer{
