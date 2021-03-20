@@ -4,9 +4,6 @@
 	<meta charset="utf-8">
 	<title>Searchify</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://d3js.org/d3.v6.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 </head>
 <body>
 	<div>
@@ -70,8 +67,6 @@ artistImage.src = image;
 
 let table = document.getElementById("artists");
 for(let i = 1; i < rel_arr.length; i++){
-    console.log(rel_arr[i]);
-
     let td1_a = document.createElement("a");
     let td2_a = document.createElement("a");
 
@@ -92,22 +87,15 @@ for(let i = 1; i < rel_arr.length; i++){
     td1_a.setAttribute("href", "spotify:artist:" + rel_arr[i].uri);
     td2_a.setAttribute("href", "/login");
     td2_a.setAttribute("onclick", 'researchArtist(rel_arr['+ i + '].name);');
-    //td2_a.setAttribute("href", '/search?artist=' + rel_arr[i].name + '&code=' + access_token);
-    
-    //selectedArtist = rel_arr[i].name;
-    
-    
+
     tr.append(td1_a);
     tr.append(td2_a);
     table.append(tr);
 }
 
 function researchArtist(artist){
-    console.log("Made it into the new function");
     localStorage.setItem('counter', 1);
     localStorage.setItem('selectedArtist', artist);
-    console.log(selectedArtist);
-    console.log(counter);
 }
 
 </script>

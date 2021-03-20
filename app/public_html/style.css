@@ -99,7 +99,6 @@ html {
     -webkit-animation: slide ease 2s;
 }
 
-
 input.search{
     color: grey;
     text-align: center;
@@ -186,9 +185,11 @@ input.search{
     animation: slide ease 2s;
     -webkit-animation: slide ease 2s; 
 }
+
 .search-result{
     flex: 1;
 }
+
 .chart{
     flex: 1;
 }
@@ -237,4 +238,8 @@ footer{
     display:block;
     overflow-y: scroll;
     height: 25%;
+}
+
+body{
+    overflow: hidden;
 }

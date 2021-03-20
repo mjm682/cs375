@@ -3,9 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>Searchify</title>
-	<script src="https://d3js.org/d3.v6.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,16 +20,11 @@
     
 let counter = localStorage.getItem('counter');
 let selectedArtist = localStorage.getItem('selectedArtist');
-console.log(counter);
-console.log(selectedArtist);
 
 let qs = window.location.search;
 let urlParams = new URLSearchParams(qs);
 let access_token = urlParams.get('code');
 let refresh_token = urlParams.get('refresh_token');
-
-console.log("Access Token = " + access_token);
-console.log("Refresh Token = " + refresh_token);
 
 if(counter > 0){
     console.log("made it into new conditional");
@@ -96,7 +88,6 @@ if(access_token){
                 console.log("error");
             }
         }).then(function (response) {
-            console.log(response);
 
             // Local Storage -> used in results page
             localStorage.setItem("artist", response[0].name);
