@@ -1,3 +1,8 @@
+const dotenv = require('dotenv');
+dotenv.config();
+const client_id = process.env.CLIENT_ID;
+const client_secret = process.env.CLIENT_SECRET;
+
 const express = require("express");
 const app = express();
 let request = require('request');
@@ -8,8 +13,6 @@ app.use(favicon(__dirname + '/favicon/favicon-32x32.png'));
 let axios = require("axios");
 let querystring = require('querystring');
 
-let client_id = 'b0e5f1805df1454daa59e96c976dc66d';
-let client_secret = '5c027ea2b9bd4e3095f718ddce2ec43d'; 
 let redirect_uri = 'http://localhost:3000/search.html'; 
 
 let searchedArtist = '';
