@@ -22,6 +22,21 @@ To download, compile, and install the latest release of node, use:
 nvm install node
 ```
 
+In order to run the app locally from your machine, you will need your own API client ID and client secret. To do this you will need to complete the following steps:
+- [create a Spotify Developer account](https://developer.spotify.com/dashboard)
+- [create a new app in the developer dashboard](https://developer.spotify.com/dashboard/create)
+- copy your client ID and client secret from your app settings
+- edit the dummy `.env` file to contain your client ID and client secret
+- install the `dotenv` package:
+```
+npm install dotenv
+```
+
+You should make sure not to push your newly updated `.env` file to git (whoops!) by using:
+```
+git update-index --skip-worktree .env
+```
+
 ### Starting the App
 ```
 $ cd app
