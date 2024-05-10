@@ -1,7 +1,7 @@
 # Searchify
-## Description
-
 An interactive application for exploring new artists on Spotify.
+
+![simple demo](demo.gif)
 
 ## Getting Started
 
@@ -32,7 +32,18 @@ $ node server.js
 The app will be running from http://localhost:3000/
 
 ### Using the App
+Log in using your Spotify credentials in order to begin exploring artists.
 
+Once you've logged in, you can search for any artist to see a few key data points:
+- artist name
+- artist profile image
+- number of followers
+- primary genre
+- a list of related artists
+
+From this view, you can navigate to similar related artists simply by clicking their name/image.
+
+By repeating this process, you can stumble across new artists to check out on Spotify based on your original search.
 
 ## Help
 Depending on your browser settings, you may be prompted to authorize 
